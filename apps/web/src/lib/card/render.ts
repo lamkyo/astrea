@@ -20,15 +20,22 @@ function escapeXml(str: string): string {
 		.replace(/'/g, "&apos;");
 }
 
-export function renderSvgCard(model: CardModel, theme: CardTheme = "dark"): string {
+export function renderSvgCard(
+	model: CardModel,
+	theme: CardTheme = "dark",
+): string {
 	const isDark = theme === "dark";
 	const bg = isDark ? "#09090b" : "#ffffff";
 	const border = isDark ? "#27272a" : "#e4e4e7";
 	const textPrimary = isDark ? "#ffffff" : "#09090b";
 	const textMuted = isDark ? "#a1a1aa" : "#71717a";
-	const accentBg = isDark ? "rgba(59, 130, 246, 0.1)" : "rgba(59, 130, 246, 0.08)";
+	const accentBg = isDark
+		? "rgba(59, 130, 246, 0.1)"
+		: "rgba(59, 130, 246, 0.08)";
 	const accentText = isDark ? "#60a5fa" : "#2563eb";
-	const cardBorder = isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)";
+	const cardBorder = isDark
+		? "rgba(255, 255, 255, 0.1)"
+		: "rgba(0, 0, 0, 0.08)";
 
 	if (!model.isPublic) {
 		return `<svg width="480" height="160" viewBox="0 0 480 160" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -46,7 +53,7 @@ export function renderSvgCard(model: CardModel, theme: CardTheme = "dark"): stri
 	const prizesText = `${model.prizesWon} win${model.prizesWon === 1 ? "" : "s"}`;
 	const totalPaidText = `${model.totalPaidAmount} ${model.totalPaidAsset}`;
 
-	const eventItems = model.lastEvents
+	const _eventItems = model.lastEvents
 		.slice(0, 3)
 		.map((eventName, idx) => {
 			const y = 24 + idx * 22;
