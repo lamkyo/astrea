@@ -46,13 +46,16 @@ export function renderSvgCard(model: CardModel, theme: CardTheme = "dark"): stri
 	const prizesText = `${model.prizesWon} win${model.prizesWon === 1 ? "" : "s"}`;
 	const totalPaidText = `${model.totalPaidAmount} ${model.totalPaidAsset}`;
 
-	const eventItems = model.lastEvents.slice(0, 3).map((eventName, idx) => {
-		const y = 24 + idx * 22;
-		return `<g transform="translate(0, ${y})">
+	const eventItems = model.lastEvents
+		.slice(0, 3)
+		.map((eventName, idx) => {
+			const y = 24 + idx * 22;
+			return `<g transform="translate(0, ${y})">
       <circle cx="4" cy="-4" r="3" fill="${accentText}"/>
       <text x="16" y="0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="${textPrimary}">${escapeXml(eventName)}</text>
     </g>`;
-	}).join("\n");
+		})
+		.join("\n");
 
 	return `<svg width="480" height="160" viewBox="0 0 480 160" fill="none" xmlns="http://www.w3.org/2000/svg">
   <style>
@@ -60,7 +63,7 @@ export function renderSvgCard(model: CardModel, theme: CardTheme = "dark"): stri
     .value { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; fill: ${textPrimary}; }
   </style>
   <rect width="480" height="160" rx="16" fill="${bg}" stroke="${cardBorder}" stroke-width="1"/>
-  
+
   <!-- Header / Login -->
   <g transform="translate(24, 24)">
     <text x="0" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="${textPrimary}">@${escapeXml(model.login)}</text>
@@ -86,7 +89,7 @@ export function renderSvgCard(model: CardModel, theme: CardTheme = "dark"): stri
 
   <!-- Recent Events / Footer divider -->
   <line x1="24" y1="110" x2="456" y2="110" stroke="${cardBorder}" stroke-width="1"/>
-  
+
   <g transform="translate(24, 130)">
     <text x="0" y="0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="${textMuted}">Recent: ${model.lastEvents.length > 0 ? escapeXml(model.lastEvents.join(" • ")) : "None"}</text>
   </g>
