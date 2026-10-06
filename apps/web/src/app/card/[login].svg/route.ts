@@ -3,7 +3,9 @@ import { db } from "@/lib/db";
 
 // Note: Organizer cards (same route family later, different data) - out of scope for U19.
 
-type Params = Promise<{ login: string }>;
+type RouteContext = {
+	params: Promise<{ login?: string }>;
+};
 
 function normalizeLogin(raw: string): string {
 	try {
@@ -15,9 +17,20 @@ function normalizeLogin(raw: string): string {
 
 export async function GET(
 	request: Request,
-	{ params }: { params: Params },
+	context: RouteContext,
 ): Promise<Response> {
-	const { login: rawLogin } = await params;
+	const contextParams = (await context.params) as
+		| { login?: string }
+		| undefined;
+	let rawLogin = contextParams?.login;
+	if (!rawLogin) {
+		const url = new URL(request.url);
+		const match = url.pathname.match(/\/card\/([^/?#]+)/);
+		if (match) {
+			rawLogin = match[1];
+		}
+	}
+
 	const cleanLogin = normalizeLogin(
 		rawLogin ? rawLogin.replace(/\.svg$/, "") : "",
 	);
